@@ -24,4 +24,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/", async (req, res) => {
+  return res.status(200).json("This is the First Page");
+});
+
+app.listen(port, "0.0.0.0", () => console.log("Connected Succcessfully"));
+
 // app.use(cors({}));
