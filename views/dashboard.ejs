@@ -1,0 +1,99 @@
+<%- include ('./partials/header.ejs') %>
+<script
+  src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"
+  data-auto-replace-svg="nest"
+></script>
+<style>
+  body {
+    background-color: white;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  #card {
+    width: 220px;
+    height: 130px;
+    overflow-y: hidden;
+    border: 0.1px solid rgb(243, 243, 243);
+    border-top-left-radius: 20px;
+    box-shadow: 5px 5px 5px lightgrey;
+  }
+  .cardstyle {
+    flex-direction: row;
+    margin-right: -150px;
+    margin-bottom: 50px;
+  }
+  .firstContainer {
+    position: relative;
+    left: 250px;
+    width: "100%";
+  }
+  #graphCard {
+    width: 18rem;
+    margin-right: 70px;
+    border: 0.1px solid rgb(243, 243, 243);
+    border-top-left-radius: 20px;
+    box-shadow: 5px 5px 5px lightgrey;
+    height: 400px;
+    width: 400px;
+  }
+  #usersCard {
+    width: 18rem;
+    margin-top: 40px;
+    height: 500px;
+    width: 680px;
+    margin-right: 40px;
+    border: 0.1px solid rgb(243, 243, 243);
+    border-top-left-radius: 20px;
+    box-shadow: 5px 5px 5px lightgrey;
+  }
+</style>
+
+<div class="firstContainer">
+  <div class="row">
+    <%for(var i=0; i< 5; i++){%>
+    <div class="col-sm-3 cardstyle">
+      <div class="card" id="card">
+        <div class="card-body">
+          <h6 class="card-title">Special</h6>
+          <h5 class="card-text">5525</h5>
+          <h7 style="color: gray; position: relative; bottom: 20"
+            >Last: 30.4k</h7
+          >
+          <span style="color: grey">
+            <i
+              class="fab fa-accusoft fa-3x"
+              style="position: relative; left: 30px; bottom: 50px"
+            ></i
+          ></span>
+        </div>
+      </div>
+    </div>
+    <%}%>
+  </div>
+  <div class="row">
+    <%for(var i=0; i< 3; i++){%>
+    <div class="card" id="graphCard">
+      <div class="card-body">
+        <h6>Title</h6>
+      </div>
+    </div>
+    <%}%>
+  </div>
+  <div class="row">
+    <%for(var i=0; i< 2; i++){%>
+    <div class="card" id="usersCard">
+      <div class="card-body">
+        <h6>Card title</h6>
+        <ul>
+          <li>Fruits</li>
+          <li>Fruits</li>
+          <li>Fruits</li>
+          <li>Fruits</li>
+        </ul>
+      </div>
+    </div>
+    <%}%>
+  </div>
+</div>
+
+<%- include ('./partials/footer.ejs') %>
