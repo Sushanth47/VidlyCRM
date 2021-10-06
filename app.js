@@ -18,7 +18,6 @@ app.use(express.static(__dirname + "public"));
 app.use(cookieParser());
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
-  // console.log(req.user, 'requserinappjs')
   next();
 });
 
