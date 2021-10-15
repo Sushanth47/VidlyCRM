@@ -13,8 +13,8 @@
     overflow-x: hidden;
   }
   #card {
-    width: 220px;
-    height: 130px;
+    width: 200px;
+    height: 100px;
     overflow-y: hidden;
     border: 0.1px solid rgb(243, 243, 243);
     border-top-left-radius: 20px;
@@ -31,19 +31,19 @@
     width: "100%";
   }
   #graphCard {
-    width: 18rem;
+    /* width: 16rem; */
     margin-right: 70px;
     border: 0.1px solid rgb(243, 243, 243);
     border-top-left-radius: 20px;
     box-shadow: 5px 5px 5px lightgrey;
     height: 400px;
-    width: 400px;
+    width: 350px;
   }
   #usersCard {
-    width: 18rem;
+    /* width: 18rem; */
     margin-top: 40px;
     height: 500px;
-    width: 680px;
+    width: 580px;
     margin-right: 40px;
     border: 0.1px solid rgb(243, 243, 243);
     border-top-left-radius: 20px;
@@ -58,11 +58,17 @@
       <div class="card" id="card">
         <div class="card-body">
           <h6 class="card-title">Special</h6>
-          <h5 class="card-text">5525</h5>
-          <h7 style="color: gray; position: relative; bottom: 20"
+          <h5 class="card-text" style="color: grey">5525</h5>
+          <h7
+            style="
+              color: lightgray;
+              position: relative;
+              bottom: 35;
+              font-size: small;
+            "
             >Last: 30.4k</h7
           >
-          <span style="color: grey">
+          <span style="color: lightgrey">
             <i
               class="fab fa-accusoft fa-3x"
               style="position: relative; left: 30px; bottom: 50px"
@@ -76,7 +82,11 @@
   <div class="row">
     <div class="card" id="graphCard">
       <div class="card-body">
-        <canvas id="myChart1" style="width: 100%; height: 100%"></canvas>
+        <span style="position: relative; top: 0; bottom: 20px"
+          >Top Movies on Vidly</span
+        >
+        <canvas id="myChart1" style="width: 100%; height: 100%; margin-top: 0">
+        </canvas>
       </div>
     </div>
 
@@ -137,69 +147,112 @@
 </div>
 
 <script>
-  var xValues = [];
-  var yValues = [];
-  const response = fetch("http://localhost:3027/crm/crm/dashboard/data");
-  response
-    .then((data) => {
-      return data.json();
-    })
-    .then((list) => {
-      // console.log(list[0].title);
-      for (var i = 0; i < list.length; i++) {
-        xValues.push(list[i].title);
-      }
+  const xLabels = [];
+  const yLabels = [];
+  async function getbardata() {
+    const response = await fetch(
+      "http://localhost:3027/crm/crm/dashboard/data"
+    );
+    const data = await response.json();
+    data.forEach((list) => {
+      var str = list.title;
+      var matches = str.match(/\b(\w)/g);
+      var acronym = matches.join("");
+      xLabels.push(acronym);
+      yLabels.push(list.rentedCustomers.length);
     });
+  }
 
-  // var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
-  console.log(xValues);
-  var yValues = [55, 49, 44, 24, 15];
-  var barColors = ["red", "green", "dodgerblue", "orange", "brown"];
+  chart1Data();
 
-  new Chart("myChart1", {
-    type: "bar",
-    data: {
-      labels: xValues,
-      datasets: [
-        {
-          backgroundColor: barColors,
-          data: yValues,
-        },
-      ],
-    },
-  });
-  new Chart("myChart2", {
-    type: "pie",
-    data: {
-      labels: xValues,
-      datasets: [
-        {
-          backgroundColor: barColors,
-          data: yValues,
-        },
-      ],
-    },
-    option: {
-      title: {
-        display: true,
-        text: "BarColor Data",
+  async function chart1Data() {
+    await getbardata();
+    const ctx = document.getElementById("myChart1").getContext("2d");
+    const myChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: xLabels,
+        datasets: [
+          {
+            label: "#1 Movie",
+            data: yLabels,
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.7)",
+              "rgba(54, 162, 235, 0.7)",
+              "rgba(255, 206, 86, 0.7)",
+              "rgba(75, 192, 192, 0.7)",
+              "rgba(153, 102, 255, 0.7)",
+              "rgba(255, 159, 64, 0.7)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
       },
-    },
-  });
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+  }
+
+  // new Chart("myChart2", {
+  //   type: "pie",
+  //   data: {
+  //     labels: xValues1,
+  //     datasets: [
+  //       {
+  //         backgroundColor: [
+  //           "rgba(255, 99, 132, 0.7)",
+  //           "rgba(54, 162, 235, 0.7)",
+  //           "rgba(255, 206, 86, 0.7)",
+  //           "rgba(75, 192, 192, 0.7)",
+  //           "rgba(153, 102, 255, 0.7)",
+  //           "rgba(255, 159, 64, 0.7)",
+  //         ],
+  //         data: yValues1,
+  //       },
+  //     ],
+  //   },
+  //   option: {
+  //     title: {
+  //       display: true,
+  //       text: "BarColor Data",
+  //     },
+  //   },
+  // });
   new Chart("myChart3", {
-    type: "doughnut",
+    type: "polarArea",
     data: {
-      labels: xValues,
+      labels: xValues1,
       datasets: [
         {
-          backgroundColor: barColors,
-          data: yValues,
+          label: "Movies vs Genres",
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.7)",
+            "rgba(54, 162, 235, 0.7)",
+            "rgba(255, 206, 86, 0.7)",
+            "rgba(75, 192, 192, 0.7)",
+            "rgba(153, 102, 255, 0.7)",
+            "rgba(255, 159, 64, 0.7)",
+          ],
+          data: [12, 25, 22, 32, 45],
         },
       ],
     },
     option: {
       title: {
-        display: true,
+        display: false,
         text: "BarColor Data",
       },
     },

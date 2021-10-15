@@ -1,0 +1,84 @@
+<%- include ('./partials/header.ejs') %>
+<style>
+  body {
+    background-color: white;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+</style>
+<body>
+  <div style="text-align: center">
+    <h1 style="text-size-adjust: 30px">Add Movies</h1>
+    <h6>Please add the details to add a movie to the collection</h6>
+    <h7>(**Make sure to add the right title for the movie**)</h7><br />
+    <br />
+  </div>
+  <div class="container">
+    <%console.log(currentUser, 'inaddmoviespage')%>
+    <div class="col d-flex justify-content-center" style="margin-left: 450px">
+      <form
+        style="text-align: center"
+        action="/crm/crm/createmovies"
+        method="POST"
+      >
+        <input
+          type="text"
+          class="form-control"
+          name="genreName"
+          id="genre"
+          oninput="getdata()"
+          placeholder="Enter Genre"
+        /><br />
+        <input
+          type="text"
+          class="form-control"
+          name="title"
+          placeholder="Title"
+        /><br />
+        <input
+          type="text"
+          class="form-control"
+          name="numberInStock"
+          value="12"
+          placeholder="Number in Stock"
+        /><br />
+        <input
+          type="text"
+          class="form-control"
+          name="dailyRentalRate"
+          placeholder="Rent Rate"
+        /><br />
+        <button
+          type="submit"
+          class="btn btn-outline-success"
+          style="border-radius: 10px"
+        >
+          Submit
+        </button>
+      </form>
+      <div
+        class="col text-right pull-right"
+        style="position: relative; bottom: 120px; left: 400px"
+      >
+        <ul
+          style="width: 200px; border: 1px solid; border-radius: 5px"
+          class="list-group pull-right"
+        >
+          <li class="list-group-item active text-center">
+            All Available Genres
+          </li>
+          <%allGenres.forEach(list=>{%>
+          <li class="list-group-item text-center"><%=list.name%></li>
+          <%})%>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  async function getdata() {
+    var genre = document.getElementById("genre").value;
+    console.log(genre);
+  }
+</script>
+<%- include ('./partials/footer.ejs')%>
