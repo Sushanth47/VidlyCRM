@@ -170,7 +170,11 @@ exports.createMovies = async (req, res) => {
           movie.director = direcTor;
           movie.runtime = runTime;
           movie.aspectRatio = ratio;
-          movie.mpAARating = mpAA;
+          if (mpAA == "Not Rated") {
+            movie.mpAARating = "A";
+          } else {
+            movie.mpAARating = mpAA;
+          }
           movie.worldwide = worldwide;
           movie.save();
           res.status(200).redirect(`/crm/crm/createmoviespage`);
@@ -195,14 +199,14 @@ exports.requestedMoviesPage = async (req, res) => {
 exports.requestedMovies = async (req, res) => {
   var customer = await Requested.aggregate([
     {
-      $project:{
-        title:1,
-        ismovieCreated:1,
-        requestCount:1,
-        noneInStock:1
-      }
-    }
-  ])
+      $project: {
+        title: 1,
+        ismovieCreated: 1,
+        requestCount: 1,
+        noneInStock: 1,
+      },
+    },
+  ]);
   return res.status(200).json({ customer: customer });
 };
 

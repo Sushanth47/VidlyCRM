@@ -5,6 +5,10 @@ const {
   getDashboard,
   createMovies,
   createMoviesPage,
+  getMoviesPage,
+  getMovies,
+  requestedMovies,
+  requestedMoviesPage,
 } = require("../controllers/crmController");
 router.get("/dashboard", getDashboardPage);
 
@@ -14,7 +18,7 @@ router.get("/createmoviespage", createMoviesPage);
 
 router.post("/createmovies", createMovies);
 
-router.get("/getmoviespage", getmoviespage);
+router.get("/getmoviespage", getMoviesPage);
 
 router.get("/requestedMoviesPage", requestedMoviesPage);
 

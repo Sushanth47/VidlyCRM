@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-// const Joi = require('Joi');
-const { genreSchema } = require("./genreModel");
 
 const movieSchema = new mongoose.Schema(
   {
@@ -9,10 +7,19 @@ const movieSchema = new mongoose.Schema(
       required: true,
       trime: true,
     },
+    reviews: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Review",
+      },
+    ],
     genreId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Genre",
       required: true,
+    },
+    genre: {
+      type: String,
     },
     rank: { type: Number },
     cast: { type: String },
@@ -41,6 +48,13 @@ const movieSchema = new mongoose.Schema(
         ref: "Customer",
       },
     ],
+    imdbRating: { type: String, default: "" },
+    director: { type: String, default: "" },
+    mpAARating: { type: String, default: "" },
+    awards: { type: String, default: "" },
+    runtime: { type: String, default: "" },
+    aspectRatio: { type: String, default: "" },
+    worldwide: { type: String, default: "" },
     ismovieCreated: { type: Boolean, default: false },
     requestCount: { type: Number, default: 0 },
   },
