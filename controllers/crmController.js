@@ -107,14 +107,22 @@ exports.createMovies = async (req, res) => {
       .request(options)
       .then(function (response) {
         var apidata = response.data;
+        let newarr = [];
+        apidata.d.forEach((list) => {
+          if (list.q) {
+            if (list.q == "feature") {
+              newarr.push(list);
+            }
+          }
+        });
         let movie = new Movie({
-          title: apidata.d[0].l,
+          title: newarr[0].l,
           genreId: genre._id,
-          year: apidata.d[0].y,
-          img: apidata.d[0].i.imageUrl,
-          links: "https://www.imdb.com/title/" + apidata.d[0].id + "/",
-          cast: apidata.d[0].s,
-          rank: apidata.d[0].rank,
+          year: newarr[0].y,
+          img: newarr[0].i.imageUrl,
+          links: "https://www.imdb.com/title/" + newarr[0].id + "/",
+          cast: newarr[0].s,
+          rank: newarr[0].rank,
           genre: genre.name,
           numberInStock: req.body.numberInStock,
           dailyRentalRate: req.body.dailyRentalRate,
@@ -257,7 +265,6 @@ exports.getMovies = async (req, res) => {
 };
 
 exports.createMoviesPage = async (req, res) => {
-  let movie = await Movie.find({}).populate("genreId");
   const allGenres = await Genre.aggregate([
     {
       $project: {
@@ -265,7 +272,5 @@ exports.createMoviesPage = async (req, res) => {
       },
     },
   ]);
-  return res
-    .status(200)
-    .render("createmovies.ejs", { movie: movie, allGenres: allGenres });
+  return res.status(200).render("createmovies.ejs", { allGenres: allGenres });
 };
