@@ -149,11 +149,18 @@
 <script>
   const xLabels = [];
   const yLabels = [];
+  var data = [];
   async function getbardata() {
     const response = await fetch(
       "http://localhost:3027/crm/crm/dashboard/data"
     );
-    const data = await response.json();
+    data = await response.json();
+  }
+
+  chart1Data();
+
+  async function chart1Data() {
+    await getbardata();
     data.forEach((list) => {
       var str = list.title;
       var matches = str.match(/\b(\w)/g);
@@ -161,13 +168,51 @@
       xLabels.push(acronym);
       yLabels.push(list.rentedCustomers.length);
     });
+    const ctx = document.getElementById("myChart1").getContext("2d");
+    const myChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: xLabels,
+        datasets: [
+          {
+            label: "#1 Movie",
+            data: yLabels,
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.7)",
+              "rgba(54, 162, 235, 0.7)",
+              "rgba(255, 206, 86, 0.7)",
+              "rgba(75, 192, 192, 0.7)",
+              "rgba(153, 102, 255, 0.7)",
+              "rgba(255, 159, 64, 0.7)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
   }
 
-  chart1Data();
+  chart2Data();
 
-  async function chart1Data() {
+  async function chart2Data() {
     await getbardata();
-    const ctx = document.getElementById("myChart1").getContext("2d");
+    data.forEach((list) => console.log(list));
+    const ctx = document.getElementById("myChart2").getContext("2d");
     const myChart = new Chart(ctx, {
       type: "bar",
       data: {
@@ -231,31 +276,32 @@
   //     },
   //   },
   // });
-  new Chart("myChart3", {
-    type: "polarArea",
-    data: {
-      labels: xValues1,
-      datasets: [
-        {
-          label: "Movies vs Genres",
-          backgroundColor: [
-            "rgba(255, 99, 132, 0.7)",
-            "rgba(54, 162, 235, 0.7)",
-            "rgba(255, 206, 86, 0.7)",
-            "rgba(75, 192, 192, 0.7)",
-            "rgba(153, 102, 255, 0.7)",
-            "rgba(255, 159, 64, 0.7)",
-          ],
-          data: [12, 25, 22, 32, 45],
-        },
-      ],
-    },
-    option: {
-      title: {
-        display: false,
-        text: "BarColor Data",
-      },
-    },
-  });
+
+  // new Chart("myChart3", {
+  //   type: "polarArea",
+  //   data: {
+  //     labels: xValues1,
+  //     datasets: [
+  //       {
+  //         label: "Movies vs Genres",
+  //         backgroundColor: [
+  //           "rgba(255, 99, 132, 0.7)",
+  //           "rgba(54, 162, 235, 0.7)",
+  //           "rgba(255, 206, 86, 0.7)",
+  //           "rgba(75, 192, 192, 0.7)",
+  //           "rgba(153, 102, 255, 0.7)",
+  //           "rgba(255, 159, 64, 0.7)",
+  //         ],
+  //         data: [12, 25, 22, 32, 45],
+  //       },
+  //     ],
+  //   },
+  //   option: {
+  //     title: {
+  //       display: false,
+  //       text: "BarColor Data",
+  //     },
+  //   },
+  // });
 </script>
 <%- include ('./partials/footer.ejs') %>

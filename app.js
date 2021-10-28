@@ -6,6 +6,9 @@ const morgan = require("morgan");
 const home = require("./routes/home");
 const userRoutes = require("./routes/userRoutes");
 const crmRoutes = require("./routes/crmRoutes");
+const { Movie } = require("./models/movieModel");
+const { Rental } = require("./models/rentalModel");
+const { Customer } = require("./models/customerModel");
 const port = process.env.PORT || 3027;
 app.set("view engine", "ejs");
 app.set("views", "./views");
@@ -31,6 +34,27 @@ app.get("/", async (req, res) => {
 
 app.get("/getPage", async (req, res) => {
   return res.status(200).render("dashboard");
+});
+
+//Delete Movies
+
+app.get("/deleteallmovies", async (req, res) => {
+  // await Movie.dropCollection();
+  // await Rental.drop();
+  await Customer.updateMany(
+    {},
+    { $set: { rentedMovies: [], wishList: [], cart: [] } }
+  );
+  return res.json("its done");
+});
+
+app.get("/test", async (req, res) => {
+  var str = "Hello, World, etc";
+  var myarray = str.split(",");
+
+  console.log(myarray);
+
+  return res.json("done");
 });
 
 app.listen(port, "0.0.0.0", () => console.log("Connected Succcessfully"));

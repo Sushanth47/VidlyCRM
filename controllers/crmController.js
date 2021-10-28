@@ -20,69 +20,55 @@ exports.getDashboard = async (req, res) => {
         _id: 1,
         title: 1,
         rentedCustomers: 1,
+        genre: 1,
       },
     },
     {
-      $sort: { rentedCustomers: 1 },
-    },
-    {
-      $limit: 5,
+      $sort: { rentedCustomers: -1 },
     },
   ]);
-  var wishlistmovies = await Customer.find(
-    {},
-    "rentedMovies cart wishList"
-  ).limit(5);
-
-  var rentedMovies = await Customer.aggregate([
+  var genrelist = await Movie.aggregate([
     {
       $group: {
-        _id: { rentedMovies: { $size: "$rentedMovies" } },
+        _id: { genre: "$genre" },
         count: { $sum: 1 },
       },
     },
-  ]);
-  console.log(rentedMovies);
-  var wishListMovies = await Customer.aggregate([
     {
-      $group: {
-        _id: { wishList: { $size: "$wishList" } },
-        count: { $sum: 1 },
-      },
+      $sort: { count: -1 },
     },
   ]);
-  console.log(wishListMovies);
-  const topmovies = [];
-  console.log(wishlistmovies);
-  wishlistmovies.forEach((list) => {
-    for (var i = 0; i < list.rentedMovies.length; i++) {
-      topmovies.push(list.rentedMovies[i]);
-    }
-    for (var i = 0; i < list.cart.length; i++) {
-      topmovies.push(list.cart[i]);
-    }
-    for (var i = 0; i < list.wishList.length; i++) {
-      topmovies.push(list.wishList[i]);
-    }
-  });
-  var freq = {};
-  for (var i = 0; i < topmovies.length; i++) {
-    var character = topmovies[i];
-    if (freq[character]) {
-      freq[character]++;
-    } else {
-      freq[character] = 1;
-    }
-  }
-  console.log(freq);
-
+  console.log(genrelist);
   return res.status(200).json(moviesList);
 };
 
 exports.createMovies = async (req, res) => {
   try {
-    const genre = await Genre.findOne({ name: req.body.genreName });
-    if (!genre) return res.status(400).json("Invalid Genre");
+    var str = req.body.genreName;
+    var myarray = str.split(",");
+    var genrearr = [];
+    // myarray.forEach(async (list) => {
+    //   const genre = await Genre.findOne(
+    //     {
+    //       name: { $regex: list, $options: "$i" },
+    //     },
+    //     "_id name"
+    //   );
+    //   if (!genre) res.status(400).json("Invalid Genre");
+    //   genrearr.push(genre);
+    // });
+    for (var i = 0; i < myarray.length; i++) {
+      console.log(myarray[i]);
+      const genre = await Genre.findOne(
+        {
+          name: { $regex: myarray[i], $options: "$i" },
+        },
+        "_id name"
+      );
+      if (!genre) res.status(400).json("Invalid Genre");
+      genrearr.push(genre);
+    }
+    console.log(genrearr);
     const movieadd = req.body.title;
     const checkmovie = await Movie.findOne({
       title: { $regex: req.body.title, $options: "$i" },
@@ -115,15 +101,21 @@ exports.createMovies = async (req, res) => {
             }
           }
         });
+        var genreobject = [];
+        console.log(genrearr);
+        genrearr.forEach((list) => {
+          // console.log(list);
+          genreobject.push(list._id);
+        });
         let movie = new Movie({
           title: newarr[0].l,
-          genreId: genre._id,
+          genreId: genreobject,
           year: newarr[0].y,
           img: newarr[0].i.imageUrl,
           links: "https://www.imdb.com/title/" + newarr[0].id + "/",
           cast: newarr[0].s,
           rank: newarr[0].rank,
-          genre: genre.name,
+          // genre: genre.name,
           numberInStock: req.body.numberInStock,
           dailyRentalRate: req.body.dailyRentalRate,
           ismovieCreated: true,

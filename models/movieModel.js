@@ -13,14 +13,18 @@ const movieSchema = new mongoose.Schema(
         ref: "Review",
       },
     ],
-    genreId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Genre",
-      required: true,
-    },
-    genre: {
-      type: String,
-    },
+    genreId: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Genre",
+        required: true,
+      },
+    ],
+    genre: [
+      {
+        type: String,
+      },
+    ],
     rank: { type: Number },
     cast: { type: String },
     year: { type: String },
