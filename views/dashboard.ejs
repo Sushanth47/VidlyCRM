@@ -151,7 +151,7 @@
   var data = [];
   async function getbardata() {
     const response = await fetch(
-      "http://localhost:3027/crm/crm/dashboard/data"
+      "https://vidly-crm.herokuapp.com/crm/crm/dashboard/data"
     );
     data = await response.json();
     // console.log(data, "data");
@@ -159,7 +159,7 @@
   var genredata = [];
   async function getgenredata() {
     const response = await fetch(
-      "http://localhost:3027/crm/crm/dashboard/genredata"
+      "https://vidly-crm.herokuapp.com/crm/crm/dashboard/genredata"
     );
     genredata = await response.json();
     // console.log(genredata);
