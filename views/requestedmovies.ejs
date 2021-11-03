@@ -1,0 +1,32 @@
+<%- include ('./partials/header.ejs') %>
+<title>Requested Movies</title>
+<style>
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+    background-color: white;
+  }
+</style>
+<body>
+  <table class="table table-hover" style="position: relative; left: 210px">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col" style="width: 10%">#</th>
+        <th scope="col" style="width: 10%">Title</th>
+        <th scope="col" style="width: 10%">Availability</th>
+        <th scope="col" style="width: 100%">Request Count</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%var i=1%> <%customer.forEach(list=>{%> <%if(list.ismovieCreated){%>
+      <tr>
+        <th scope="row"><%=i%><%i++%></th>
+        <td><%=list.title%></td>
+        <td><%if(list.ismovieCreated)%>Yes</td>
+        <td><%=list.requestCount%></td>
+      </tr>
+      <%}%> <%})%>
+    </tbody>
+  </table>
+</body>
+<%- include ('./partials/footer.ejs') %>

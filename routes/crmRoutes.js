@@ -6,6 +6,7 @@ const {
   createMovies,
   createMoviesPage,
   getMoviesPage,
+  genreData,
   getMovies,
   requestedMovies,
   requestedMoviesPage,
@@ -13,6 +14,8 @@ const {
 router.get("/dashboard", getDashboardPage);
 
 router.get("/dashboard/data", getDashboard);
+
+router.get("/dashboard/genredata", genreData);
 
 router.get("/createmoviespage", createMoviesPage);
 

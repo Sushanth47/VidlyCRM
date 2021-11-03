@@ -3,9 +3,36 @@ const { Movie } = require("../models/movieModel");
 const { Genre } = require("../models/genreModel");
 const { Customer } = require("../models/customerModel");
 const { Requested } = require("../models/requestModel");
+var _ = require("lodash-contrib");
+// Load the core build.
+// var _ = require("lodash/core");
+// Load the FP build for immutable auto-curried iteratee-first data-last methods.
+var fp = require("lodash/fp");
+var array = require("lodash/array");
+var object = require("lodash/fp/object");
+var at = require("lodash/at");
+var curryN = require("lodash/fp/curryN");
 
 exports.getDashboardPage = async (req, res) => {
-  return res.status(200).render("dashboard.ejs");
+  var moviesList = await Movie.aggregate([
+    {
+      $match: {
+        rentedCustomers: { $ne: [] },
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        title: 1,
+        rentedCustomers: 1,
+        numberInStock: 1,
+      },
+    },
+    {
+      $sort: { numberInStock: -1 },
+    },
+  ]);
+  return res.status(200).render("dashboard.ejs", { moviesList: moviesList });
 };
 
 exports.getDashboard = async (req, res) => {
@@ -20,26 +47,52 @@ exports.getDashboard = async (req, res) => {
         _id: 1,
         title: 1,
         rentedCustomers: 1,
-        genre: 1,
       },
     },
     {
       $sort: { rentedCustomers: -1 },
     },
   ]);
-  var genrelist = await Movie.aggregate([
+
+  return res.status(200).json(moviesList);
+};
+
+exports.genreData = async (req, res) => {
+  var moviesList = await Movie.aggregate([
     {
-      $group: {
-        _id: { genre: "$genre" },
-        count: { $sum: 1 },
+      $lookup: {
+        from: "genres",
+        localField: "genreId",
+        foreignField: "_id",
+        as: "genre",
       },
     },
     {
-      $sort: { count: -1 },
+      $match: {
+        rentedCustomers: { $ne: [] },
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        // title: 1,
+        rentedCustomers: 1,
+        genre: "$genre.name",
+      },
+    },
+    {
+      $sort: { rentedCustomers: -1 },
     },
   ]);
-  console.log(genrelist);
-  return res.status(200).json(moviesList);
+  var arr = [];
+  moviesList.forEach((list) => {
+    list.genre.forEach((now) => {
+      arr.push(now);
+    });
+  });
+
+  var obj = _.frequencies(arr);
+  return res.status(200).json(obj);
 };
 
 exports.createMovies = async (req, res) => {
@@ -47,16 +100,6 @@ exports.createMovies = async (req, res) => {
     var str = req.body.genreName;
     var myarray = str.split(",");
     var genrearr = [];
-    // myarray.forEach(async (list) => {
-    //   const genre = await Genre.findOne(
-    //     {
-    //       name: { $regex: list, $options: "$i" },
-    //     },
-    //     "_id name"
-    //   );
-    //   if (!genre) res.status(400).json("Invalid Genre");
-    //   genrearr.push(genre);
-    // });
     for (var i = 0; i < myarray.length; i++) {
       console.log(myarray[i]);
       const genre = await Genre.findOne(
@@ -189,14 +232,39 @@ exports.createMovies = async (req, res) => {
 };
 
 exports.getMoviesPage = async (req, res) => {
-  return res.render("movies.ejs");
+  const movieCount = await Movie.countDocuments();
+  const movies = await Movie.aggregate([
+    {
+      $lookup: {
+        from: "genres",
+        localField: "genreId",
+        foreignField: "_id",
+        as: "genre",
+      },
+    },
+
+    {
+      $project: {
+        _id: 1,
+        title: 1,
+
+        year: 1,
+
+        numberInStock: 1,
+        dailyRentalRate: 1,
+
+        genre: "$genre.name",
+        imdbRating: 1,
+      },
+    },
+    {
+      $sort: { _id: -1 },
+    },
+  ]);
+  return res.render("movies.ejs", { movieCount: movieCount, movies: movies });
 };
 
 exports.requestedMoviesPage = async (req, res) => {
-  return res.render("requestedmovies.ejs");
-};
-
-exports.requestedMovies = async (req, res) => {
   var customer = await Requested.aggregate([
     {
       $project: {
@@ -207,12 +275,14 @@ exports.requestedMovies = async (req, res) => {
       },
     },
   ]);
+  return res.render("requestedmovies.ejs", { customer: customer });
+};
+
+exports.requestedMovies = async (req, res) => {
   return res.status(200).json({ customer: customer });
 };
 
 exports.getMovies = async (req, res) => {
-  const perPage = 9;
-  const page = req.query.pageNo;
   const movieCount = await Movie.countDocuments();
   const movies = await Movie.aggregate([
     {

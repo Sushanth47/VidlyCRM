@@ -1,0 +1,43 @@
+<%- include ('./partials/header.ejs') %>
+<head>
+  <title>All Movies</title>
+</head>
+<script
+  src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"
+  data-auto-a11y="true"
+></script>
+<style>
+  body {
+    background-color: white;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+</style>
+<body>
+  <h1 class="text-center">All Movies</h1>
+  <br />
+  <table class="table table-striped" style="position: relative; left: 200px">
+    <thead>
+      <tr>
+        <th scope="col" style="width: 10%">#</th>
+        <th scope="col" style="width: 20%">Title</th>
+        <th scope="col" style="width: 20%">Genre</th>
+        <th scope="col" style="width: 10%">Stock</th>
+        <th scope="col">Remove</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%var i=1;%> <%movies.forEach(list=>{%>
+      <tr>
+        <td><%=i%><%i++%></td>
+        <td><%=list.title%></td>
+        <td><%=list.genre%></td>
+        <td><%=list.numberInStock%></td>
+        <td><i class="fas fa-trash"></i></td>
+      </tr>
+      <%})%>
+    </tbody>
+  </table>
+</body>
+
+<%- include ('./partials/footer.ejs')%>
