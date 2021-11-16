@@ -2,7 +2,15 @@
 <title>Add Movies</title>
 <style>
   body {
-    background-color: white;
+    background: linear-gradient(
+      90deg,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(134, 134, 243, 1) 0%,
+      rgba(0, 212, 255, 1) 100%
+    );
+    color: white;
     max-width: 100%;
     overflow-x: hidden;
   }
@@ -58,11 +66,7 @@
         name="dailyRentalRate"
         placeholder="Rent Rate"
       /><br />
-      <button
-        type="submit"
-        class="btn btn-outline-success"
-        style="border-radius: 10px"
-      >
+      <button type="submit" class="btn btn-success" style="border-radius: 10px">
         Submit
       </button>
     </form>
