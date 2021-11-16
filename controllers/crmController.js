@@ -4,9 +4,7 @@ const { Genre } = require("../models/genreModel");
 const { Customer } = require("../models/customerModel");
 const { Requested } = require("../models/requestModel");
 var _ = require("lodash-contrib");
-// Load the core build.
-// var _ = require("lodash/core");
-// Load the FP build for immutable auto-curried iteratee-first data-last methods.
+
 var fp = require("lodash/fp");
 var array = require("lodash/array");
 var object = require("lodash/fp/object");
@@ -315,12 +313,6 @@ exports.getMovies = async (req, res) => {
     },
     {
       $sort: { _id: -1 },
-    },
-    {
-      $skip: perPage * (page - 1),
-    },
-    {
-      $limit: perPage,
     },
   ]);
   return res.status(200).json({ movieCount: movieCount, movies: movies });

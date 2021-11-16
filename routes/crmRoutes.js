@@ -11,6 +11,7 @@ const {
   requestedMovies,
   requestedMoviesPage,
 } = require("../controllers/crmController");
+
 router.get("/dashboard", getDashboardPage);
 
 router.get("/dashboard/data", getDashboard);
