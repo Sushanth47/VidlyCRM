@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
+var cors = require("cors");
 const morgan = require("morgan");
 const home = require("./routes/home");
 const userRoutes = require("./routes/userRoutes");
@@ -16,7 +17,16 @@ app.set("views", "./views");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
-
+var whitelist = ["http://localhost:3027", "https://vidly-crm.herokuapp.com"];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
 app.use(express.static(__dirname + "public"));
 app.use(cookieParser());
 app.use((req, res, next) => {
