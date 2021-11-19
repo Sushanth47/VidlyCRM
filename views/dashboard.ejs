@@ -164,7 +164,7 @@
 
 <script>
   const tableclass = document.getElementsByClassName("table");
-  console.log(tableclass);
+  // console.log(tableclass);
   var xLabels = [];
   var yLabels = [];
   const xLabels2 = [];
@@ -177,6 +177,7 @@
     data = await response.json();
     console.log(data, "data");
   }
+
   var genredata = [];
   async function getgenredata() {
     const response = await fetch(
@@ -184,6 +185,7 @@
     );
     genredata = await response.json();
   }
+
   var clickdata = [];
   async function getclicks() {
     const response = await fetch(
@@ -246,7 +248,7 @@
 
   async function chart2Data() {
     await getgenredata();
-    console.log(genredata);
+    console.log(genredata, "genredata");
 
     xLabels = Object.keys(genredata);
     yLabels = Object.values(genredata);
@@ -293,7 +295,7 @@
 
   async function chart3Data() {
     await getclicks();
-
+    console.log(clickdata, "clicks");
     xLabels = Object.keys(clickdata);
     yLabels = Object.values(genredata);
 
