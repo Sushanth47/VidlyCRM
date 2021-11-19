@@ -8,7 +8,7 @@ const {
   getMoviesPage,
   genreData,
   getClicks,
-  // getMovies,
+  getMovies,
   removeMovies,
   requestedMovies,
   requestedMoviesPage,
@@ -41,6 +41,6 @@ router.post("/requestedMovies", requestedMovies);
 
 router.post("/removeMovies", removeMovies);
 
-// router.get("/getMovies", getMovies);
+router.get("/getMovies", getMovies);
 
 module.exports = router;

@@ -344,43 +344,43 @@ exports.requestedMovies = async (req, res) => {
   return res.status(200).redirect("/crm/crm/requestedMoviesPage");
 };
 
-// exports.getMovies = async (req, res) => {
-//   const movieCount = await Movie.countDocuments();
-//   const movies = await Movie.aggregate([
-//     {
-//       $lookup: {
-//         from: "genres",
-//         localField: "genreId",
-//         foreignField: "_id",
-//         as: "genre",
-//       },
-//     },
-//     {
-//       $unwind: "$genre",
-//     },
-//     {
-//       $project: {
-//         _id: 1,
-//         title: 1,
-//         img: 1,
-//         genreId: 1,
-//         rank: 1,
-//         cast: 1,
-//         year: 1,
-//         links: 1,
-//         dailyRentalRate: 1,
-//         ismovieCreated: 1,
-//         requestCount: 1,
-//         genre: 1,
-//         imdbRating: 1,
-//       },
-//     },
-//     {
-//       $sort: { _id: -1 },
-//     },
-//   ]);
-//   return res.status(200).json({ movieCount: movieCount, movies: movies });
-// };
+exports.getMovies = async (req, res) => {
+  const movieCount = await Movie.countDocuments();
+  const movies = await Movie.aggregate([
+    {
+      $lookup: {
+        from: "genres",
+        localField: "genreId",
+        foreignField: "_id",
+        as: "genre",
+      },
+    },
+    {
+      $unwind: "$genre",
+    },
+    {
+      $project: {
+        _id: 1,
+        title: 1,
+        img: 1,
+        genreId: 1,
+        rank: 1,
+        cast: 1,
+        year: 1,
+        links: 1,
+        dailyRentalRate: 1,
+        ismovieCreated: 1,
+        requestCount: 1,
+        genre: 1,
+        imdbRating: 1,
+      },
+    },
+    {
+      $sort: { _id: -1 },
+    },
+  ]);
+  return res.status(200).json({ movieCount: movieCount, movies: movies });
+};
 
 exports.createMoviesPage = async (req, res) => {
   const allGenres = await Genre.aggregate([
