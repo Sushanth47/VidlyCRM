@@ -91,7 +91,7 @@ exports.genreData = async (req, res) => {
         // title: 1,
         rentedCustomers: 1,
         genre: "$genre.name",
-        clicks,
+        clicks: 1,
       },
     },
     {
@@ -122,7 +122,7 @@ exports.getClicks = async (req, res) => {
       $sort: { clicks: -1 },
     },
     {
-      $limit: 5,
+      $limit: 6,
     },
   ]);
   console.log(clicks, "click");

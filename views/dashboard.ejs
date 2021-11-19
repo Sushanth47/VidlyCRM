@@ -108,6 +108,7 @@
 
   <div class="card" id="graphCard">
     <div class="card-body">
+      <span style="text-align: center">Top Viewed Movies </span>
       <canvas id="myChart3" style="width: 100%; height: 100%"></canvas>
     </div>
   </div>
@@ -175,7 +176,7 @@
       "https://vidly-crm.herokuapp.com/crm/crm/dashboard/data"
     );
     data = await response.json();
-    console.log(data, "data");
+    // console.log(data, "data");
   }
 
   var genredata = [];
@@ -184,6 +185,7 @@
       "https://vidly-crm.herokuapp.com/crm/crm/dashboard/genredata"
     );
     genredata = await response.json();
+    // console.log(genredata, "genredata");
   }
 
   var clickdata = [];
@@ -259,7 +261,7 @@
         labels: xLabels,
         datasets: [
           {
-            label: "#1 Movie",
+            label: "#1 Genre",
             data: yLabels,
             backgroundColor: [
               "rgba(255, 99, 132, 0.7)",
@@ -284,37 +286,46 @@
       options: {
         scales: {
           y: {
-            beginAtZero: false,
+            beginAtZero: true,
           },
         },
       },
     });
+    console.log(myChart);
   }
 
   chart3Data();
 
   async function chart3Data() {
     await getclicks();
-    console.log(clickdata, "clicks");
-    xLabels = Object.keys(clickdata);
-    yLabels = Object.values(genredata);
+    // console.log(clickdata, "clicks");
+    var xLabels1 = [];
+    var yLabels1 = [];
+    clickdata.forEach((list) => {
+      xLabels1.push(list.title);
+      yLabels1.push(list.clicks);
+    });
+    // var xLabels1 = Object.keys(clickdata);
+    // var yLabels1 = Object.values(clickdata);
+    console.log(xLabels1);
+    console.log(yLabels1);
+    const ctx = document.getElementById("myChart3").getContext("2d");
 
-    const ctx1 = document.getElementById("myChart3").getContext("2d");
-
-    const mychart = new Chart(ctx1, {
+    const myChart = new Chart(ctx, {
       type: "bar",
       data: {
-        labels: xLabels,
+        labels: xLabels1,
         datasets: [
           {
-            label: "#1 Movie",
-            data: yLabels,
+            label: "#1 Clicked",
+            data: yLabels1,
             backgroundColor: [
               "rgba(255, 99, 132, 0.7)",
               "rgba(54, 162, 235, 0.7)",
               "rgba(255, 206, 86, 0.7)",
               "rgba(75, 192, 192, 0.7)",
               "rgba(153, 102, 255, 0.7)",
+              "rgba(255, 159, 64, 0.7)",
             ],
             borderColor: [
               "rgba(255, 99, 132, 1)",
@@ -322,6 +333,7 @@
               "rgba(255, 206, 86, 1)",
               "rgba(75, 192, 192, 1)",
               "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
             ],
             borderWidth: 1,
           },
@@ -330,7 +342,7 @@
       options: {
         scales: {
           y: {
-            beginAtZero: false,
+            beginAtZero: true,
           },
         },
       },
