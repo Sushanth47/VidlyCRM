@@ -5,8 +5,9 @@ const EmployeeSchema = new mongoose.Schema(
     name: { type: String },
     email: { type: String, required: true },
     phone: { type: String },
+    token: { type: String },
     password: { type: String, required: true },
-    isEmployee: { type: Boolean, default: false },
+    isEmployee: { type: Boolean, default: true },
   },
   { timestamps: true }
 );

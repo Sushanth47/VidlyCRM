@@ -77,7 +77,9 @@
     }
     
     /* Change color of dropdown links on hover */
-    .dropdown-content a:hover {background-color: #a2ffaf}
+    .dropdown-content a:hover {
+      background-color: #a2ffaf;
+    }
     
     /* Show the dropdown menu on hover */
     .dropdown:hover .dropdown-content {
@@ -100,23 +102,21 @@
          <li class="nav-item ">
            <a class="nav-link" href="/crm/crm/getmoviespage" >Movies </a>
          </li>
-         <li class="nav-item ">
-           <a class="nav-link"  href="/api/customers/getrentals">GoldCustomers</a>
-         </li>
           <li class="nav-item ">
            <a class="nav-link"  href="/crm/crm/createmoviespage" role="button" >
              AddMovie
            </a>
           </li> 
-     
-         
           <li class="nav-item ">
             <a class="nav-link" href="/crm/crm/requestedMoviesPage"  role="button" >
               RequestedMovies
             </a>
-          
-         </li>
-         
+         </li> 
+         <li class="nav-item ">
+          <a class="nav-link" href="/crm/user/signup" role="button" >
+            AddEmployee
+          </a>
+       </li>
        </ul>
         
       <div class="container nav justify-content-lg-end">
@@ -126,7 +126,7 @@
           <button class="dropbtn">My Account</button>
           
           <div class="dropdown-content">
-            <a href="/">Logout</a>
+            <a href="/crm/user/logout">Logout</a>
           </div>
       </div>
     </div> 

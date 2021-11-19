@@ -1,14 +1,7 @@
 const mongoose = require("mongoose");
 mongoose.set("debug", true);
 mongoose.Promise = Promise;
-var dbURI = process.env.dbURI;
-mongoose
-  .connect(dbURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("DB Connection Successful"))
-  .catch((err) => console.log(err));
+
 
 module.exports.Employee = require("./employeeModel");
 module.exports.Customer = require("./customerModel");

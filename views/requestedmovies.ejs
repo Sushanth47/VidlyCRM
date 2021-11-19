@@ -18,17 +18,26 @@
         <tr>
           <th scope="col" style="width: 10%">#</th>
           <th scope="col" style="width: 20%">Title</th>
-          <th scope="col" style="width: 20%">Availability</th>
+
           <th scope="col" style="width: 20%">Request Count</th>
+          <th scope="col" style="width: 20%">Stat</th>
         </tr>
       </thead>
       <tbody>
-        <%var i=1%> <%customer.forEach(list=>{%> <%if(list.ismovieCreated){%>
+        <%var i=1%> <%customer.forEach(list=>{%> <%if(!list.ismovieCreated){%>
         <tr>
           <th scope="row"><%=i%><%i++%></th>
           <td><%=list.title%></td>
-          <td><%if(list.ismovieCreated)%>Yes</td>
+
           <td><%=list.requestCount%></td>
+          <td>
+            <form action="/crm/crm/requestedMovies" method="POST">
+              <input type="hidden" name="_id" value="<%=list._id%>" />
+              <button type="submit" class="btn btn-primary btn-sm">
+                Remove
+              </button>
+            </form>
+          </td>
         </tr>
         <%}%> <%})%>
       </tbody>

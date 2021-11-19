@@ -7,27 +7,40 @@ const {
   createMoviesPage,
   getMoviesPage,
   genreData,
-  getMovies,
+  getClicks,
+  // getMovies,
+  removeMovies,
   requestedMovies,
   requestedMoviesPage,
 } = require("../controllers/crmController");
 
-router.get("/dashboard", getDashboardPage);
+const { authcheck } = require("../middleware/auth");
 
+//Render Pages Routes
+
+router.get("/dashboard", authcheck, getDashboardPage);
+
+router.get("/createmoviespage", authcheck, createMoviesPage);
+
+router.get("/getmoviespage", authcheck, getMoviesPage);
+
+router.get("/requestedMoviesPage", authcheck, requestedMoviesPage);
+
+//Axios routes
 router.get("/dashboard/data", getDashboard);
 
 router.get("/dashboard/genredata", genreData);
 
-router.get("/createmoviespage", createMoviesPage);
+router.get("/clicks", getClicks);
+
+//Others
 
 router.post("/createmovies", createMovies);
 
-router.get("/getmoviespage", getMoviesPage);
+router.post("/requestedMovies", requestedMovies);
 
-router.get("/requestedMoviesPage", requestedMoviesPage);
+router.post("/removeMovies", removeMovies);
 
-router.get("/requestedMovies", requestedMovies);
-
-router.get("/getMovies", getMovies);
+// router.get("/getMovies", getMovies);
 
 module.exports = router;

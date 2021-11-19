@@ -32,7 +32,6 @@
     width: 12.5rem;
     height: 6.25rem;
     border-top-left-radius: 20px;
-    /* box-shadow: 5px 5px 5px lightgrey; */
   }
   .cardstyle {
     margin-right: 1.25rem;
@@ -58,14 +57,12 @@
   }
   #usersCard {
     width: 34rem;
-    /* margin-right: 40px; */
-    /* border: 0.1px solid rgb(53, 52, 52); */
     border-radius: 8%;
-    /* box-shadow: 5px 5px 5px lightgrey; */
+    height: 100%;
   }
 </style>
 
-<div class="makeRow">
+<!-- <div class="makeRow">
   <%for(var i=0; i< 3; i++){%>
   <div class="cardstyle">
     <div class="card" id="card">
@@ -91,7 +88,8 @@
     </div>
   </div>
   <%}%>
-</div>
+</div> -->
+
 <div class="makeRow">
   <div class="card" id="graphCard">
     <div class="card-body">
@@ -122,9 +120,8 @@
         <thead class="thead-dark">
           <tr>
             <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Mandle</th>
+            <th scope="col">Title</th>
+            <th scope="col">Count</th>
           </tr>
         </thead>
         <tbody>
@@ -135,6 +132,30 @@
             <td><%=moviesList[i].rentedCustomers.length%></td>
           </tr>
           <%}%>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card" id="usersCard">
+    <div class="card-body">
+      <h5 class="text-center">Top Customers</h5>
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Movie Count</th>
+            <!-- <th scope="col">Mandle</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <%var j=1;%> <%rented.forEach(list=>{%>
+          <tr>
+            <td><%=j%><%j++%></td>
+            <td><%=list.name%></td>
+            <td><%=list.rentedMovies.length%></td>
+          </tr>
+          <%})%>
         </tbody>
       </table>
     </div>
@@ -162,9 +183,12 @@
       "https://vidly-crm.herokuapp.com/crm/crm/dashboard/genredata"
     );
     genredata = await response.json();
-    // console.log(genredata);
   }
-
+  var clickdata = [];
+  async function getclicks() {
+    const response = await fetch("http://localhost:3027/crm/crm/clicks");
+    clickdata = await response.json();
+  }
   chart1Data();
 
   async function chart1Data() {
@@ -220,7 +244,6 @@
 
   async function chart2Data() {
     await getgenredata();
-    // data.forEach((list) => console.log(list));
     console.log(genredata);
 
     xLabels = Object.keys(genredata);
@@ -263,68 +286,51 @@
       },
     });
   }
-  const ctx = document.getElementById("myChart3").getContext("2d");
-  const xValues1 = [3, 5, 4, 5, 6, 5, 4];
-  const yValues1 = [
-    "sad",
-    "sdasd",
-    "sdasd",
-    "sdasd",
-    "sdasd",
-    "sdasd",
-    "sdasd",
-  ];
-  var mychart = new Chart(ctx, {
-    type: "pie",
-    data: {
-      labels: xValues1,
-      datasets: [
-        {
-          backgroundColor: [
-            "rgba(255, 99, 132, 0.7)",
-            "rgba(54, 162, 235, 0.7)",
-            "rgba(255, 206, 86, 0.7)",
-            "rgba(75, 192, 192, 0.7)",
-            "rgba(153, 102, 255, 0.7)",
-            "rgba(255, 159, 64, 0.7)",
-          ],
-          data: yValues1,
-        },
-      ],
-    },
-    options: {
-      title: {
-        display: true,
-        // text: "World Wide Wine Production",
+
+  chart3Data();
+
+  async function chart3Data() {
+    await getclicks();
+
+    xLabels = Object.keys(clickdata);
+    yLabels = Object.values(genredata);
+
+    const ctx1 = document.getElementById("myChart3").getContext("2d");
+
+    const mychart = new Chart(ctx1, {
+      type: "bar",
+      data: {
+        labels: xLabels,
+        datasets: [
+          {
+            label: "#1 Movie",
+            data: yLabels,
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.7)",
+              "rgba(54, 162, 235, 0.7)",
+              "rgba(255, 206, 86, 0.7)",
+              "rgba(75, 192, 192, 0.7)",
+              "rgba(153, 102, 255, 0.7)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
       },
-    },
-  });
-  // const
-  // const myChart3 = new Chart(ctx, {
-  //   type: "polarArea",
-  //   data: {
-  //     labels: xValues1,
-  //     datasets: [
-  //       {
-  //         label: "Movies vs Genres",
-  //         backgroundColor: [
-  //           "rgba(255, 99, 132, 0.7)",
-  //           "rgba(54, 162, 235, 0.7)",
-  //           "rgba(255, 206, 86, 0.7)",
-  //           "rgba(75, 192, 192, 0.7)",
-  //           "rgba(153, 102, 255, 0.7)",
-  //           "rgba(255, 159, 64, 0.7)",
-  //         ],
-  //         data: [12, 25, 22, 32, 45],
-  //       },
-  //     ],
-  //   },
-  //   option: {
-  //     title: {
-  //       display: false,
-  //       text: "BarColor Data",
-  //     },
-  //   },
-  // });
+      options: {
+        scales: {
+          y: {
+            beginAtZero: false,
+          },
+        },
+      },
+    });
+  }
 </script>
 <%- include ('./partials/footer.ejs') %>

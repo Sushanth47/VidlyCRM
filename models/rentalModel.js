@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// const Joi = require('joi');
 
 const rentalSchema = new mongoose.Schema(
   {
@@ -8,11 +7,19 @@ const rentalSchema = new mongoose.Schema(
       ref: "Customer",
       required: true,
     },
-    movie: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Movie",
-      required: true,
-    },
+    movie: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Movie",
+        required: true,
+      },
+    ],
+    movies: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
     dateOut: {
       type: Date,
       required: true,
@@ -25,7 +32,7 @@ const rentalSchema = new mongoose.Schema(
       type: Number,
       min: 0,
     },
-    checkOut: { type: Boolean },
+    checkOut: { type: String },
   },
   { timestamps: true }
 );

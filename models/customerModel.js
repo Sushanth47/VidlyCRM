@@ -22,6 +22,14 @@ var customerSchema = new mongoose.Schema(
       sparse: true,
     },
     rentedMovies: [
+      [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Movie",
+        },
+      ],
+    ],
+    reviewedMovies: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Movie",
