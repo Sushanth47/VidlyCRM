@@ -186,7 +186,9 @@
   }
   var clickdata = [];
   async function getclicks() {
-    const response = await fetch("http://localhost:3027/crm/crm/clicks");
+    const response = await fetch(
+      "https://vidly-crm.herokuapp.com/crm/crm/clicks"
+    );
     clickdata = await response.json();
   }
   chart1Data();
