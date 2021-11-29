@@ -23,10 +23,14 @@ exports.getDashboardPage = async (req, res) => {
         _id: 1,
         title: 1,
         rentedCustomers: 1,
+        numberInStock: 1,
       },
     },
+    {
+      $sort: { numberInStock: 1 },
+    },
   ]);
-  console.log(moviesList, "movies");
+  // console.log(moviesList, "movies");
   var rented = await Customer.aggregate([
     {
       $project: {
@@ -42,7 +46,7 @@ exports.getDashboardPage = async (req, res) => {
       $limit: 8,
     },
   ]);
-  console.log(rented);
+  // console.log(rented);
   return res
     .status(200)
     .render("dashboard.ejs", { moviesList: moviesList, rented: rented });

@@ -38,6 +38,7 @@
         <tr>
           <th scope="col til1" style="width: 10%">#</th>
           <th scope="col til2" style="width: 25%">Title</th>
+          <th scope="col til13" style="width: 30%">CodeName</th>
           <th scope="col til13" style="width: 30%">Genre</th>
           <th scope="col til14" style="width: 20%">Stock</th>
           <th scope="col">Remove</th>
@@ -46,8 +47,11 @@
       <tbody>
         <%var i=1;%> <%movies.forEach(list=>{%>
         <tr>
+          <% var str = list.title; %> <% var matches = str.match(/\b(\w)/g); %>
+          <% var acronym = matches.join(""); %>
           <td><%=i%><%i++%></td>
           <td><%=list.title%></td>
+          <td><%=acronym%></td>
           <td><%=list.genre%></td>
           <td><%=list.numberInStock%></td>
           <td>

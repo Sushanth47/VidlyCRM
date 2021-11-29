@@ -176,7 +176,6 @@
       "https://vidly-crm.herokuapp.com/crm/crm/dashboard/data"
     );
     data = await response.json();
-    // console.log(data, "data");
   }
 
   var genredata = [];
@@ -185,7 +184,6 @@
       "https://vidly-crm.herokuapp.com/crm/crm/dashboard/genredata"
     );
     genredata = await response.json();
-    // console.log(genredata, "genredata");
   }
 
   var clickdata = [];
@@ -203,7 +201,6 @@
       var str = list.title;
       var matches = str.match(/\b(\w)/g);
       var acronym = matches.join("");
-      // console.log(acronym);
       xLabels.push(acronym);
       yLabels.push(list.rentedCustomers.length);
     });
@@ -250,7 +247,6 @@
 
   async function chart2Data() {
     await getgenredata();
-    console.log(genredata, "genredata");
 
     xLabels = Object.keys(genredata);
     yLabels = Object.values(genredata);
@@ -298,11 +294,16 @@
 
   async function chart3Data() {
     await getclicks();
-    // console.log(clickdata, "clicks");
     var xLabels1 = [];
+    var xLabels2 = [];
     var yLabels1 = [];
+
     clickdata.forEach((list) => {
-      xLabels1.push(list.title);
+      var str = list.title;
+      var matches = str.match(/\b(\w)/g);
+      var acronym = matches.join("");
+      xLabels1.push(acronym);
+      xLabels2.push(str);
       yLabels1.push(list.clicks);
     });
     // var xLabels1 = Object.keys(clickdata);
