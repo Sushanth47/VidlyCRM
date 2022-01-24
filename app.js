@@ -12,7 +12,6 @@ const session = require("express-session");
 const mongoose = require("mongoose");
 const port = process.env.PORT || 3027;
 var dbURI = process.env.dbURI;
-// console.log(dbURI);
 mongoose
   .connect(dbURI, {
     useNewUrlParser: true,
@@ -28,7 +27,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
-app.use(express.static(__dirname + "public"));
+app.use(express.static(__dirname + "/"));
+// app.use("/public", express.static(__dirname + "/public"));
 app.use(cookieParser());
 app.use(flash());
 app.use(

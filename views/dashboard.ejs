@@ -10,158 +10,85 @@
   ></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  <link rel="stylesheet" href="/public/dashboard.css" />
 </head>
 
 <title>Dashboard</title>
 
-<style>
-  body {
-    background: linear-gradient(
-      90deg,
-      rgba(2, 0, 36, 1) 0%,
-      rgba(2, 0, 36, 1) 0%,
-      rgba(2, 0, 36, 1) 0%,
-      rgba(134, 134, 243, 1) 0%,
-      rgba(0, 212, 255, 1) 100%
-    );
-    /* color: white; */
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-  #card {
-    width: 12.5rem;
-    height: 6.25rem;
-    border-top-left-radius: 20px;
-  }
-  .cardstyle {
-    margin-right: 1.25rem;
-    margin-bottom: 3.125rem;
-  }
-
-  #graphCard {
-    /* border: 0.1px solid rgb(20, 20, 20); */
-    border-radius: 10%;
-    /* box-shadow: 5px 5px 5px lightgrey; */
-    height: 25rem;
-    width: 22.875rem;
-    height: 28rem;
-    margin-bottom: 3rem;
-  }
-  .makeRow {
-    display: flex;
-    flex-wrap: wrap;
-    flex-shrink: inherit;
-    flex-basis: 2rem;
-    justify-content: space-around;
-    grid-template-columns: min-content;
-  }
-  #usersCard {
-    width: 34rem;
-    border-radius: 8%;
-    height: 100%;
-  }
-</style>
-
-<!-- <div class="makeRow">
-  <%for(var i=0; i< 3; i++){%>
-  <div class="cardstyle">
-    <div class="card" id="card">
+<body>
+  <div class="makeRow">
+    <div class="card" id="graphCard">
       <div class="card-body">
-        <h6 class="card-title">Special</h6>
-        <h5 class="card-text" style="color: grey">5525</h5>
-        <h7
-          style="
-            color: lightgray;
-            position: relative;
-            bottom: 35;
-            font-size: small;
-          "
-          >Last: 30.4k</h7
-        >
-        <span style="color: rgb(14, 222, 236)">
-          <i
-            class="fab fa-accusoft fa-3x"
-            style="position: relative; left: 1.8rem; bottom: 3.125rem"
-          ></i
-        ></span>
+        <p style="text-align: center">Top Movies on Vidly</p>
+        <canvas id="myChart1" style="width: 100%; height: 100%; margin-top: 0">
+        </canvas>
+      </div>
+    </div>
+
+    <div class="card" id="graphCard">
+      <div class="card-body">
+        <p style="text-align: center">Top Genres on Vidly</p>
+        <canvas id="myChart2"></canvas>
+      </div>
+    </div>
+
+    <div class="card" id="graphCard">
+      <div class="card-body">
+        <p style="text-align: center">Top Viewed Movies</p>
+        <canvas id="myChart3"></canvas>
       </div>
     </div>
   </div>
-  <%}%>
-</div> -->
-
-<div class="makeRow">
-  <div class="card" id="graphCard">
-    <div class="card-body">
-      <span style="text-align: center">Top Movies on Vidly</span>
-      <canvas id="myChart1" style="width: 100%; height: 100%; margin-top: 0">
-      </canvas>
+  <div class="makeRow">
+    <div class="card" id="usersCard">
+      <div class="card-body">
+        <h5 class="text-center">Top Movies</h5>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Title</th>
+              <th scope="col">Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%for(var i=0; i< 8; i++){%>
+            <tr>
+              <td><%=i+1%></td>
+              <td><%=moviesList[i].title%></td>
+              <td><%=moviesList[i].rentedCustomers.length%></td>
+            </tr>
+            <%}%>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card" id="usersCard">
+      <div class="card-body">
+        <h5 class="text-center">Top Customers</h5>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Movie Count</th>
+              <!-- <th scope="col">Mandle</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <%var j=1;%> <%rented.forEach(list=>{%>
+            <tr>
+              <td><%=j%><%j++%></td>
+              <td><%=list.name%></td>
+              <td><%=list.rentedMovies.length%></td>
+            </tr>
+            <%})%>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-
-  <div class="card" id="graphCard">
-    <div class="card-body">
-      <span style="text-align: center">Top Genres on Vidly</span>
-      <canvas id="myChart2" style="width: 100%; height: 100%"></canvas>
-    </div>
-  </div>
-
-  <div class="card" id="graphCard">
-    <div class="card-body">
-      <span style="text-align: center">Top Viewed Movies </span>
-      <canvas id="myChart3" style="width: 100%; height: 100%"></canvas>
-    </div>
-  </div>
-</div>
-<div class="makeRow">
-  <div class="card" id="usersCard">
-    <div class="card-body">
-      <h5 class="text-center">Top Movies</h5>
-      <table class="table">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Count</th>
-          </tr>
-        </thead>
-        <tbody>
-          <%for(var i=0; i< 8; i++){%>
-          <tr>
-            <td><%=i+1%></td>
-            <td><%=moviesList[i].title%></td>
-            <td><%=moviesList[i].rentedCustomers.length%></td>
-          </tr>
-          <%}%>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="card" id="usersCard">
-    <div class="card-body">
-      <h5 class="text-center">Top Customers</h5>
-      <table class="table">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Movie Count</th>
-            <!-- <th scope="col">Mandle</th> -->
-          </tr>
-        </thead>
-        <tbody>
-          <%var j=1;%> <%rented.forEach(list=>{%>
-          <tr>
-            <td><%=j%><%j++%></td>
-            <td><%=list.name%></td>
-            <td><%=list.rentedMovies.length%></td>
-          </tr>
-          <%})%>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+</body>
 
 <script>
   const tableclass = document.getElementsByClassName("table");
